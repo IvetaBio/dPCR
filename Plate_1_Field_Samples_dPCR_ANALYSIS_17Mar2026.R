@@ -13,3 +13,10 @@ table(field_counts)
 # results are showing that 193 rows have 25 columns...and there is one row that has 2 columns
 
 # trying to find the exact row that is giving me issues 
+bad_rows <- which(field_counts != 25)
+bad_rows
+# looks like row number 1 is the bad row
+
+#Now I am running the following command to see what the raw text looks like at row 1
+lines <- readLines(csv_path)
+lines[bad_rows]
