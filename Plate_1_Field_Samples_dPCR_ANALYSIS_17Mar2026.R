@@ -5,25 +5,6 @@ csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Studen
 #Reading in the data file 
 Plate_1_dPCR_data <- read.csv(csv_path, header = TRUE, stringsAsFactors = FALSE)
 
-#having issues reading in the csv file, so I am going to see how many fields there are 
-# asking if every row in this CSV file have the same number of comma-separated fields...
-field_counts <- count.fields(csv_path, sep = ",")
-table(field_counts)
-
-# results are showing that 193 rows have 25 columns...and there is one row that has 2 columns
-
-# trying to find the exact row that is giving me issues 
-bad_rows <- which(field_counts != 25)
-bad_rows
-# looks like row number 1 is the bad row
-
-#Now I am running the following command to see what the raw text looks like at row 1
-lines <- readLines(csv_path)
-lines[bad_rows]
-
-#Inspecting the raw file in R...
-readLines(csv_path, n = 20)
-
 
 # Okay so the issue is with the first line.. so I am going to skip line 1
 Plate_1_dPCR_data <- read.csv(
