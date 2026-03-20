@@ -20,3 +20,15 @@ bad_rows
 #Now I am running the following command to see what the raw text looks like at row 1
 lines <- readLines(csv_path)
 lines[bad_rows]
+
+#Inspecting the raw file in R...
+readLines(csv_path, n = 20)
+
+
+# Okay so the issue is with the first line.. so I am going to skip line 1
+Plate_1_dPCR_data <- read.csv(
+  csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
