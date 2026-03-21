@@ -46,3 +46,16 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data)
 
+library(stringr)
+
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  mutate(
+    Treatment = word(Sample.NTC.Control, -1)
+  )
+
+view(Plate_1_dPCR_data)
+
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  select(Well,Sample.NTC.Control,Location,Treatment, everything())
+
+view(Plate_1_dPCR_data)
