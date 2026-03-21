@@ -72,9 +72,18 @@ Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>%
 view(Plate_1_dPCR_data_wide)
 
 
+# Adding a proportion column 
+Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
+  mutate(
+    G22_Proportion = ifelse(Universal == 0, NA, G22_Hypo/Universal)
+  )
 
+view(Plate_1_dPCR_data_wide)
 
+Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
+  mutate(G22_Proportion = G22_Proportion * 100)
 
+view(Plate_1_dPCR_data_wide)
 
 
 
