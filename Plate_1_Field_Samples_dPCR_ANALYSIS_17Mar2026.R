@@ -59,3 +59,22 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
   select(Well,Sample.NTC.Control,Location,Treatment, everything())
 
 view(Plate_1_dPCR_data)
+
+
+
+# Pivoting my data frame so that one sample has only one row
+Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>% 
+  select(Sample.NTC.Control,Location,Treatment,Target..Name.,Conc...cp.µL...dPCR.reaction.) %>% 
+  pivot_wider(
+    names_from = Target..Name.,
+    values_from = Conc...cp.µL...dPCR.reaction.)
+
+view(Plate_1_dPCR_data_wide)
+
+
+
+
+
+
+
+
