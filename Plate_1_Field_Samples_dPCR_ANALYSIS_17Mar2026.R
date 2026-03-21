@@ -17,6 +17,8 @@ Plate_1_dPCR_data <- read.csv(
 #installing packages
 install.packages("tidyverse")
 library(tidyverse)
+install.packages("dplyr")
+library(dplyr)
 
 #Starting to clean up the dataframe by removing columns I do not need and selecting columns I do want
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
@@ -25,9 +27,22 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data)
 
+# Now I will be adding a 'Location' column, where if the third character in the 
+## "Sample.NTC.Control" column is a C then it's from Carrington, if it is an M, then it's from Minot
 
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  mutate(
+    Location = case_when(
+      substr(Sample.NTC.Control, 3,3) == "C" ~ "Carrington",
+      substr(Sample.NTC.Control, 3,3) == "M" ~ "Minot"
+    )
+  )
 
+view(Plate_1_dPCR_data)
 
+# Now I am rearranging the columns in the order I would like 
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  select(Well,Sample.NTC.Control,Location,everything())
 
-
+view(Plate_1_dPCR_data)
 
