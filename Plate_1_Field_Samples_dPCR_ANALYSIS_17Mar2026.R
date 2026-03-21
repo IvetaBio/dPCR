@@ -17,3 +17,11 @@ Plate_1_dPCR_data <- read.csv(
 #installing packages
 install.packages("tidyverse")
 library(tidyverse)
+
+
+
+
+
+
+
+
