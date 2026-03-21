@@ -18,6 +18,12 @@ Plate_1_dPCR_data <- read.csv(
 install.packages("tidyverse")
 library(tidyverse)
 
+#Starting to clean up the dataframe by removing columns I do not need and selecting columns I do want
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  select(Well,Sample.NTC.Control,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.,
+         Partitions..Valid., Partitions..Positive.,Partitions..Negative.,Threshold)
+
+view(Plate_1_dPCR_data)
 
 
 
