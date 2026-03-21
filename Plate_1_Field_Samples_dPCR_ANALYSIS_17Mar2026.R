@@ -86,4 +86,14 @@ Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>%
 view(Plate_1_dPCR_data_wide)
 
 
+## Grouping by Location and Treatment and summarizing the data 
+Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>% 
+  group_by(Location, Treatment) %>% 
+  summarise(
+    n = n(),
+    mean_G22 = mean(G22_Proportion, na.rm = TRUE),
+    SD_G22 = sd(G22_Proportion, na.rm = TRUE),
+    SE_G22 = SD_G22/sqrt(n)
+  )
+
 
