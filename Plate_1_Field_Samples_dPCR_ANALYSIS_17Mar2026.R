@@ -102,3 +102,12 @@ Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>%
 Plate_1_plot_data <- Plate_1_dPCR_summary %>% 
   filter(!is.na(Location))
 
+library(ggplot2)
+
+
+
+
+
+
+
+
