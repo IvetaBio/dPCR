@@ -98,3 +98,7 @@ Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>%
   )
 
 
+# Getting ready to plot the data, first by removing the controls
+Plate_1_plot_data <- Plate_1_dPCR_summary %>% 
+  filter(!is.na(Location))
+
