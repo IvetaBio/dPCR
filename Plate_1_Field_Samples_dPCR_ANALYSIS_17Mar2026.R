@@ -33,6 +33,7 @@ view(Plate_1_dPCR_data)
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
   mutate(
     Location = case_when(
+      Sample.NTC.Control == "NTC" ~ NA_character_,
       substr(Sample.NTC.Control, 3,3) == "C" ~ "Carrington",
       substr(Sample.NTC.Control, 3,3) == "M" ~ "Minot"
     )
