@@ -82,7 +82,14 @@ Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>%
 view(Plate_1_dPCR_data_wide)
 
 Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
-  mutate(G22_Proportion = G22_Proportion * 100)
+  mutate(G22_Proportion = G22_Proportion * 100,
+         G22_First_Correction = G22_Hypo * 8,
+         Universal_First_Correction = Universal * 8, 
+         dilution_number = as.numeric(sub(".*-([0-9]+) .*", "\\1", Sample.NTC.Control)),
+         dilution_factor = 10^dilution_number,
+         G22_Second_Correction = G22_First_Correction * dilution_factor,
+         Universal_Second_Correction = Universal_First_Correction * dilution_factor
+         )
 
 view(Plate_1_dPCR_data_wide)
 
@@ -100,10 +107,7 @@ Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>%
 
 # Getting ready to plot the data, first by removing the controls
 Plate_1_plot_data <- Plate_1_dPCR_summary %>% 
-  filter(!is.na(Location)) %>% 
-  mutate(
-    
-  )
+  filter(!is.na(Location))
 
 library(ggplot2)
 
