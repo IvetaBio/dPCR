@@ -94,6 +94,30 @@ Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>%
 view(Plate_1_dPCR_data_wide)
 
 
+# Summarizing G22 and Universal 
+G22_summary <- Plate_1_dPCR_data_wide %>% 
+  filter(!Treatment %in% c("NTC", "3841_G22")) %>% 
+  group_by(Location, Treatment) %>% 
+  summarise(
+    n = n(),
+    mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
+    sd_G22 = sd(G22_Second_Correction, na.rm = TRUE),
+    se_G22 = sd_G22/sqrt(n())
+  )
+
+Universal_summary <- Plate_1_dPCR_data_wide %>% 
+  filter(!Treatment %in% c("NTC", "3841_G22")) %>% 
+  group_by(Location, Treatment) %>% 
+  summarise(
+    n = n(),
+    mean_Universal = mean(Universal_Second_Correction, na.rm = TRUE),
+    sd_Universal = sd(Universal_Second_Correction, na.rm = TRUE),
+    se_Universal = sd_Universal/sqrt(n())
+  )
+
+
+
+
 ## Grouping by Location and Treatment and summarizing the data 
 Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>% 
   group_by(Location, Treatment) %>% 
