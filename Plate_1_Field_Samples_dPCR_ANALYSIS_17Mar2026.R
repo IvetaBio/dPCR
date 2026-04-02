@@ -125,8 +125,20 @@ Universal_summary$Treatment <- factor(Universal_summary$Treatment,
 
 
 # Plotting G22 Abundance 
+library(ggplot2)
 
+G22_abundance_plot <- ggplot(G22_summary, aes(x = Treatment, y = mean_G22, fill = Location))+
+  geom_col(position = position_dodge(width = 0.9))+
+  geom_errorbar(aes(ymin = mean_G22 - se_G22, ymax = mean_G22 + se_G22),
+                width = 0.2,
+                position = position_dodge(width = 0.9))+
+  labs(
+    title = "G22 Abundance by Treatment and Location", 
+    x = "Treatment",
+    y = "Location")+
+  theme_minimal()
 
+G22_abundance_plot
 
 ## Grouping by Location and Treatment and summarizing the data 
 Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>% 
