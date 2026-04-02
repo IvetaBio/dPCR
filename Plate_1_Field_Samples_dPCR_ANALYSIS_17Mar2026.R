@@ -115,6 +115,16 @@ Universal_summary <- Plate_1_dPCR_data_wide %>%
     se_Universal = sd_Universal/sqrt(n())
   )
 
+# Plotting 'How abundance of G22 changes across Treatments'
+## first changing the type of Treatment data to factor, to help with plotting treatment order
+G22_summary$Treatment <- factor(G22_summary$Treatment,
+                                levels = c("Uninoc","Ino","G22"))
+
+Universal_summary$Treatment <- factor(Universal_summary$Treatment, 
+                                      levels = c("Uninoc","Ino","G22"))
+
+
+# Plotting G22 Abundance 
 
 
 
