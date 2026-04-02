@@ -140,6 +140,21 @@ G22_abundance_plot <- ggplot(G22_summary, aes(x = Treatment, y = mean_G22, fill 
 
 G22_abundance_plot
 
+
+Universal_abundance_plot <- ggplot(Universal_summary, aes(x = Treatment, y = mean_Universal, fill = Location))+
+  geom_col(position = position_dodge(width = 0.9))+
+  geom_errorbar(aes(ymin = mean_Universal - se_Universal, ymax = mean_Universal + se_Universal),
+                width = 0.2,
+                position = position_dodge(width = 0.9))+
+  labs(
+    title = "Universal Abundance by Treatment and Location",
+    x = "Treatment",
+    y = "Location")+
+  theme_minimal()
+
+Universal_abundance_plot
+
+
 ## Grouping by Location and Treatment and summarizing the data 
 Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>% 
   group_by(Location, Treatment) %>% 
