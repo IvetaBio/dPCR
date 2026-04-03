@@ -4,6 +4,9 @@ csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Studen
 
 Plate_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_2_Field_Samples_dPCR_run_06Mar2026_IH_analysis_03_04_2026_14_12_40_UTC+00_00.csv"
 
+
+
+
 #Reading in the data file 
 # Okay so the issue is with the first line.. so I am going to skip line 1
 Plate_1_dPCR_data <- read.csv(
@@ -12,6 +15,15 @@ Plate_1_dPCR_data <- read.csv(
   header = TRUE,
   stringsAsFactors = FALSE
 )
+
+Plate_2_dPCR_data <- read.csv(
+  Plate_2_csv_path, 
+  skip = 1,
+  header = TRUE, 
+  stringsAsFactors = FALSE
+)
+
+
 
 #installing packages
 install.packages("tidyverse")
