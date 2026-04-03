@@ -106,7 +106,95 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data)
 
+# Cleaning up all the datafiles so that they can later be put into one big dataframe
+plate_list <- list(
+  Plate_1_dPCR_data, 
+  Plate_2_dPCR_data,
+  Plate_3_dPCR_data,
+  Plate_4_dPCR_data,
+  Plate_1_1_dPCR_data,
+  Plate_2_2_dPCR_data,
+  Plate_3_2_dPCR_data,
+  Plate_4_2_dPCR_data,
+  Plate_5_dPCR_data,
+  Plate_6_dPCR_data
+)
+
+plate_list <- lapply(plate_list, function(df) {
+  df[] <- lapply(df, as.character)
+  df
+})
+
+Master_dPCR_data <- bind_rows(plate_list)
+
+
+
+#Adding a column to let me know what plate the data came from 
+Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_1_04Mar2026"
+  )
+
+Plate_2_dPCR_data <- Plate_2_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_2_06Mar2026"
+  )
+
+Plate_3_dPCR_data <- Plate_3_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_3_18Mar2026"
+  )
+
+Plate_4_dPCR_data <- Plate_4_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_4_19Mar2026"
+  )
+
+Plate_1_1_dPCR_data <- Plate_1_1_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_1_1_23Mar2026"
+  )
+
+Plate_2_2_dPCR_data <- Plate_2_2_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_2_2_24Mar2026"
+  )
+
+Plate_3_2_dPCR_data <- Plate_3_2_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_3_2_24Mar2026"
+  )
+
+Plate_4_2_dPCR_data <- Plate_4_2_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_4_2_28Mar2026"
+  )
+
+
+Plate_5_dPCR_data <- Plate_5_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_5_29Mar2026"
+  )
+
+Plate_6_dPCR_data <- Plate_6_dPCR_data %>% 
+  mutate(
+    Source_Plate = "Plate_6_29Mar2026"
+  )
+
+
 # Binding multiple datasets into one big dataset
+Master_dPCR_data <- bind_rows(
+  Plate_1_dPCR_data,
+  Plate_2_dPCR_data,
+  Plate_3_dPCR_data,
+  Plate_4_dPCR_data,
+  Plate_1_1_dPCR_data,
+  Plate_2_2_dPCR_data,
+  Plate_3_2_dPCR_data,
+  Plate_4_2_dPCR_data,
+  Plate_5_dPCR_data,
+  Plate_6_dPCR_data
+)
 
 # Now I will be adding a 'Location' column, where if the third character in the 
 ## "Sample.NTC.Control" column is a C then it's from Carrington, if it is an M, then it's from Minot
