@@ -210,6 +210,20 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data)
 
+Master_dPCR_data <- Master_dPCR_data %>%
+  mutate(
+    Prefix = sub("_.*", "", Sample.NTC.Control),
+    Location = case_when(
+      Sample.NTC.Control == "NTC" ~ NA_character_,
+      nchar(Prefix) == 4 & substr(Prefix, 3, 3) == "C" ~ "Carrington",
+      nchar(Prefix) == 4 & substr(Prefix, 3, 3) == "M" ~ "Minot",
+      nchar(Prefix) == 3 & substr(Prefix, 2, 2) == "C" ~ "Carrington",
+      nchar(Prefix) == 3 & substr(Prefix, 2, 2) == "M" ~ "Minot",
+      TRUE ~ NA_character_
+    )
+  )
+
+
 # Now I am rearranging the columns in the order I would like 
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
   select(Well,Sample.NTC.Control,Location,everything())
