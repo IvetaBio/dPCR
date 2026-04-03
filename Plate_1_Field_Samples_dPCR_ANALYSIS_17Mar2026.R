@@ -4,8 +4,21 @@ csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Studen
 
 Plate_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_2_Field_Samples_dPCR_run_06Mar2026_IH_analysis_03_04_2026_14_12_40_UTC+00_00.csv"
 
+Plate_3_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_3_Field_Samples_dPCR_run_18Mar2026_analysis_03_04_2026_14_24_36_UTC+00_00.csv"
 
+Plate_4_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_4_Field_Samples_dPCR_run_19Mar2026_analysis_03_04_2026_14_31_15_UTC+00_00.csv"
 
+Plate_1_1_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_1.1_Field_Samples_dPCR_run_23Mar2026_analysis_03_04_2026_14_37_17_UTC+00_00.csv"
+
+Plate_2_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_2.2_Field_Samples_dPCR_run_24Mar2026_analysis_03_04_2026_14_41_53_UTC+00_00.csv"
+
+Plate_3_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_3.2_Field_Samples_dPCR_run_24Mar2026_analysis_03_04_2026_14_46_02_UTC+00_00.csv"
+
+Plate_4_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_4.2_Field_Samples_dPCR_Run_28Mar2026_analysis_03_04_2026_14_50_34_UTC+00_00.csv"
+
+Plate_5_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_5_Field_Samples_dPCR_run_29Mar2026_analysis_03_04_2026_14_54_04_UTC+00_00.csv"
+
+Plate_6_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_6_Field_Samples_dPCR_run_29Mar2026_analysis_03_04_2026_14_57_22_UTC+00_00.csv"
 
 #Reading in the data file 
 # Okay so the issue is with the first line.. so I am going to skip line 1
@@ -23,6 +36,61 @@ Plate_2_dPCR_data <- read.csv(
   stringsAsFactors = FALSE
 )
 
+Plate_3_dPCR_data <- read.csv(
+  Plate_3_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_4_dPCR_data <- read.csv(
+  Plate_4_csv_path, 
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_1_1_dPCR_data <- read.csv(
+  Plate_1_1_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_2_2_dPCR_data <- read.csv(
+  Plate_2_2_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_3_2_dPCR_data <- read.csv(
+  Plate_3_2_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_4_2_dPCR_data <- read.csv(
+  Plate_4_2_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_5_dPCR_data <- read.csv(
+  Plate_5_csv_path,
+  skip = 1,
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+Plate_6_dPCR_data <- read.csv(
+  Plate_6_csv_path,
+  skip = 1,
+  header= TRUE,
+  stringsAsFactors = FALSE
+)
 
 
 #installing packages
