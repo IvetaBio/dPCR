@@ -266,6 +266,8 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
     )
   )
 
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>% 
+  select(Source_Plate,Location,Sample.NTC.Control,Treatment,everything())
 
 
 # Pivoting my data frame so that one sample has only one row
