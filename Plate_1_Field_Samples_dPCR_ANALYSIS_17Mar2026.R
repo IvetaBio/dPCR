@@ -224,9 +224,11 @@ Master_dPCR_data <- Master_dPCR_data %>%
   )
 
 Master_dPCR_data_clean <- Master_dPCR_data %>% 
-  select(Source_Plate,Location,Sample.NTC.Control,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.)
+  select(Source_Plate,Location,Sample.NTC.Control,Reaction.Mix,Target..Name.,
+         Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.)
 
 view(Master_dPCR_data_clean)
+
 
 # Now I am rearranging the columns in the order I would like 
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
@@ -247,6 +249,22 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
   select(Well,Sample.NTC.Control,Location,Treatment, everything())
 
 view(Plate_1_dPCR_data)
+
+#Now I am adding a Treatment Column to the Master_dPCR_dataframe
+
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
+  filter(
+    !str_detect(Sample.NTC.Control, "Granular Pea Chickpea Lentil"),
+    !str_detect(Sample.NTC.Control, "Liquid Pea Lentil")
+  ) %>%
+  mutate(
+    Treatment = case_when(
+      str_detect(Sample.NTC.Control, "Uninoc") ~ "Uninoc",
+      str_detect(Sample.NTC.Control, "G22") ~ "G22",
+      str_detect(Sample.NTC.Control, "G24|(^|[_ ])Ino($|[_ ])| Ino$|_Ino$") ~ "G24",
+      TRUE ~ NA_character_
+    )
+  )
 
 
 
