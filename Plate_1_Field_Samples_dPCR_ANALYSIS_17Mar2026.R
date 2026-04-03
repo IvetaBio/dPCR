@@ -223,6 +223,10 @@ Master_dPCR_data <- Master_dPCR_data %>%
     )
   )
 
+Master_dPCR_data_clean <- Master_dPCR_data %>% 
+  select(Source_Plate,Location,Sample.NTC.Control,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.)
+
+view(Master_dPCR_data_clean)
 
 # Now I am rearranging the columns in the order I would like 
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
