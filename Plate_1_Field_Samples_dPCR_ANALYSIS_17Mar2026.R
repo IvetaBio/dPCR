@@ -106,6 +106,8 @@ Plate_1_dPCR_data <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data)
 
+# Binding multiple datasets into one big dataset
+
 # Now I will be adding a 'Location' column, where if the third character in the 
 ## "Sample.NTC.Control" column is a C then it's from Carrington, if it is an M, then it's from Minot
 
