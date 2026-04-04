@@ -277,6 +277,11 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
 
 view(Master_dPCR_data_clean)
 
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>% 
+  select(Source_Plate,Location,Sample.NTC.Control,Treatment,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
+
+view(Master_dPCR_data_clean)
+
 # Pivoting my data frame so that one sample has only one row
 Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>% 
   select(Sample.NTC.Control,Location,Treatment,Target..Name.,Conc...cp.µL...dPCR.reaction.) %>% 
