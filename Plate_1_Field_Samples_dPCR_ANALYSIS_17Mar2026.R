@@ -295,15 +295,6 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
 view(Master_dPCR_data_clean)
 
 # Pivoting my data frame so that one sample has only one row
-Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>% 
-  select(Sample.NTC.Control,Location,Treatment,Target..Name.,Conc...cp.µL...dPCR.reaction.) %>% 
-  pivot_wider(
-    names_from = Target..Name.,
-    values_from = Conc...cp.µL...dPCR.reaction.)
-
-view(Plate_1_dPCR_data_wide)
-
-
 Master_dPCR_data_wide <- Master_dPCR_data_clean %>% 
   pivot_wider(
     names_from = Target..Name.,
@@ -313,25 +304,24 @@ Master_dPCR_data_wide <- Master_dPCR_data_clean %>%
 view(Master_dPCR_data_wide)
 
 # Adding a proportion column 
-Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
+Master_dPCR_data_wide <- Master_dPCR_data_wide %>%
   mutate(
-    G22_Proportion = ifelse(Universal == 0, NA, G22_Hypo/Universal)
+    G22 = as.numeric(G22),
+    Universal = as.numeric(Universal),
+    G24 = as.numeric(G24)
+  ) %>%
+  mutate(
+    G22_First_Correction = G22 * 8,
+    Universal_First_Correction = Universal * 8,
+    G24_First_Correction = G24 * 8,
+    dilution_number = as.numeric(sub(".*-([0-9]+) .*", "\\1", Sample.NTC.Control)),
+    dilution_factor = 10^dilution_number,
+    G22_Second_Correction = G22_First_Correction * dilution_factor,
+    Universal_Second_Correction = Universal_First_Correction * dilution_factor,
+    G24_Second_Correction = G24_First_Correction * dilution_factor
   )
 
-view(Plate_1_dPCR_data_wide)
-
-Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
-  mutate(G22_Proportion = G22_Proportion * 100,
-         G22_First_Correction = G22_Hypo * 8,
-         Universal_First_Correction = Universal * 8, 
-         dilution_number = as.numeric(sub(".*-([0-9]+) .*", "\\1", Sample.NTC.Control)),
-         dilution_factor = 10^dilution_number,
-         G22_Second_Correction = G22_First_Correction * dilution_factor,
-         Universal_Second_Correction = Universal_First_Correction * dilution_factor
-         )
-
-view(Plate_1_dPCR_data_wide)
-
+view(Master_dPCR_data_wide)
 
 # Summarizing G22 and Universal 
 G22_summary <- Plate_1_dPCR_data_wide %>% 
