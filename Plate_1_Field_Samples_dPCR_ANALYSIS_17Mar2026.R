@@ -270,6 +270,13 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
   select(Source_Plate,Location,Sample.NTC.Control,Treatment,everything())
 
 
+# Cleaning the Master_dPCR_clean dataframe so that it removes any samples that
+## has "NA" in the 'Treatment' column
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
+  filter(!is.na(Treatment))
+
+view(Master_dPCR_data_clean)
+
 # Pivoting my data frame so that one sample has only one row
 Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>% 
   select(Sample.NTC.Control,Location,Treatment,Target..Name.,Conc...cp.µL...dPCR.reaction.) %>% 
