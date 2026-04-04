@@ -282,6 +282,18 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
 
 view(Master_dPCR_data_clean)
 
+
+# Changing the Treatment name that has G22_Hypo to G22
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
+  mutate(
+    Target..Name. = case_when(
+      Target..Name. == "G22_Hypo" ~ "G22",
+      TRUE ~ Target..Name.
+    )
+  )
+
+view(Master_dPCR_data_clean)
+
 # Pivoting my data frame so that one sample has only one row
 Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>% 
   select(Sample.NTC.Control,Location,Treatment,Target..Name.,Conc...cp.µL...dPCR.reaction.) %>% 
@@ -291,6 +303,14 @@ Plate_1_dPCR_data_wide <- Plate_1_dPCR_data %>%
 
 view(Plate_1_dPCR_data_wide)
 
+
+Master_dPCR_data_wide <- Master_dPCR_data_clean %>% 
+  pivot_wider(
+    names_from = Target..Name.,
+    values_from = Conc...cp.µL...dPCR.reaction.
+  )
+
+view(Master_dPCR_data_wide)
 
 # Adding a proportion column 
 Plate_1_dPCR_data_wide <- Plate_1_dPCR_data_wide %>% 
