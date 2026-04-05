@@ -323,9 +323,8 @@ Master_dPCR_data_wide <- Master_dPCR_data_wide %>%
 
 view(Master_dPCR_data_wide)
 
-# Summarizing G22 and Universal 
-G22_summary <- Plate_1_dPCR_data_wide %>% 
-  filter(!Treatment %in% c("NTC", "3841_G22")) %>% 
+# Summarizing G22, Universal, and G24
+G22_summary <- Master_dPCR_data_wide  %>% 
   group_by(Location, Treatment) %>% 
   summarise(
     n = n(),
