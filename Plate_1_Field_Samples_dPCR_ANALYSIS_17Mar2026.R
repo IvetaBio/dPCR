@@ -284,8 +284,7 @@ G22_summary <- Master_dPCR_data_wide %>%
     mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
     sd_G22 = sd(G22_Second_Correction, na.rm = TRUE),
     se_G22 = sd_G22 / sqrt(n()),
-    .groups = "drop"
-  )
+    .groups = "drop")
 
 Universal_summary <- Master_dPCR_data_wide %>% 
   group_by(Location,Treatment) %>% 
