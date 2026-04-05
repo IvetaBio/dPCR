@@ -275,14 +275,16 @@ Master_dPCR_data_wide <- Master_dPCR_data_wide %>%
 
 view(Master_dPCR_data_wide)
 
-# Summarizing G22, Universal, and G24
-G22_summary <- Master_dPCR_data_wide  %>% 
-  group_by(Location, Treatment) %>% 
+# Summarizing G22, Universal, and G24.... taking into account the different MM's used 
+G22_summary <- Master_dPCR_data_wide %>%
+  filter(Reaction.Mix == "U_G22", !is.na(Location)) %>%
+  group_by(Location, Treatment) %>%
   summarise(
     n = n(),
     mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
     sd_G22 = sd(G22_Second_Correction, na.rm = TRUE),
-    se_G22 = sd_G22/sqrt(n())
+    se_G22 = sd_G22 / sqrt(n()),
+    .groups = "drop"
   )
 
 Universal_summary <- Master_dPCR_data_wide %>% 
