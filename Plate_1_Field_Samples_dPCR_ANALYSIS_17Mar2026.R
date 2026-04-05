@@ -1,6 +1,6 @@
 
 #copying path to file
-csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_1_field_samples_dpcr_run_04Mar2026_analysis_17_03_2026_15_20_38_UTC+00_00.csv"
+Plate_1_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_1_field_samples_dpcr_run_04Mar2026_analysis_17_03_2026_15_20_38_UTC+00_00.csv"
 
 Plate_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_2_Field_Samples_dPCR_run_06Mar2026_IH_analysis_03_04_2026_14_12_40_UTC+00_00.csv"
 
@@ -14,16 +14,16 @@ Plate_2_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_G
 
 Plate_3_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_3.2_Field_Samples_dPCR_run_24Mar2026_analysis_03_04_2026_14_46_02_UTC+00_00.csv"
 
-Plate_4_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_4.2_Field_Samples_dPCR_Run_28Mar2026_analysis_03_04_2026_14_50_34_UTC+00_00.csv"
+Plate_4_2_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_4.2_Field_Samples_dPCR_Run_28Mar2026_analysis_05_04_2026_16_59_46_UTC+00_00.csv"
 
-Plate_5_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_5_Field_Samples_dPCR_run_29Mar2026_analysis_03_04_2026_14_54_04_UTC+00_00.csv"
+Plate_5_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_5_Field_Samples_dPCR_run_29Mar2026_analysis_05_04_2026_17_52_26_UTC+00_00.csv"
 
 Plate_6_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_6_Field_Samples_dPCR_run_29Mar2026_analysis_03_04_2026_14_57_22_UTC+00_00.csv"
 
 #Reading in the data file 
 # Okay so the issue is with the first line.. so I am going to skip line 1
 Plate_1_dPCR_data <- read.csv(
-  csv_path,
+  Plate_1_csv_path,
   skip = 1,
   header = TRUE,
   stringsAsFactors = FALSE
@@ -99,35 +99,6 @@ library(tidyverse)
 install.packages("dplyr")
 library(dplyr)
 
-#Starting to clean up the dataframe by removing columns I do not need and selecting columns I do want
-Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
-  select(Well,Sample.NTC.Control,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.,
-         Partitions..Valid., Partitions..Positive.,Partitions..Negative.,Threshold)
-
-view(Plate_1_dPCR_data)
-
-# Cleaning up all the datafiles so that they can later be put into one big dataframe
-plate_list <- list(
-  Plate_1_dPCR_data, 
-  Plate_2_dPCR_data,
-  Plate_3_dPCR_data,
-  Plate_4_dPCR_data,
-  Plate_1_1_dPCR_data,
-  Plate_2_2_dPCR_data,
-  Plate_3_2_dPCR_data,
-  Plate_4_2_dPCR_data,
-  Plate_5_dPCR_data,
-  Plate_6_dPCR_data
-)
-
-plate_list <- lapply(plate_list, function(df) {
-  df[] <- lapply(df, as.character)
-  df
-})
-
-Master_dPCR_data <- bind_rows(plate_list)
-
-
 
 #Adding a column to let me know what plate the data came from 
 Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
@@ -182,9 +153,9 @@ Plate_6_dPCR_data <- Plate_6_dPCR_data %>%
   )
 
 
-# Binding multiple datasets into one big dataset
-Master_dPCR_data <- bind_rows(
-  Plate_1_dPCR_data,
+# Cleaning up all the datafiles so that they can later be put into one big dataframe
+plate_list <- list(
+  Plate_1_dPCR_data, 
   Plate_2_dPCR_data,
   Plate_3_dPCR_data,
   Plate_4_dPCR_data,
@@ -196,19 +167,18 @@ Master_dPCR_data <- bind_rows(
   Plate_6_dPCR_data
 )
 
+plate_list <- lapply(plate_list, function(df) {
+  df[] <- lapply(df, as.character)
+  df
+})
+
+Master_dPCR_data <- bind_rows(plate_list)
+
+
+
+
 # Now I will be adding a 'Location' column, where if the third character in the 
 ## "Sample.NTC.Control" column is a C then it's from Carrington, if it is an M, then it's from Minot
-
-Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
-  mutate(
-    Location = case_when(
-      Sample.NTC.Control == "NTC" ~ NA_character_,
-      substr(Sample.NTC.Control, 3,3) == "C" ~ "Carrington",
-      substr(Sample.NTC.Control, 3,3) == "M" ~ "Minot"
-    )
-  )
-
-view(Plate_1_dPCR_data)
 
 Master_dPCR_data <- Master_dPCR_data %>%
   mutate(
@@ -224,31 +194,13 @@ Master_dPCR_data <- Master_dPCR_data %>%
   )
 
 Master_dPCR_data_clean <- Master_dPCR_data %>% 
-  select(Source_Plate,Location,Sample.NTC.Control,Reaction.Mix,Target..Name.,
-         Conc...cp.µL...dPCR.reaction.,CI..95....dPCR.reaction.)
+  select(Source_Plate,Sample.NTC.Control,Location,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
 
 view(Master_dPCR_data_clean)
 
 
 # Now I am rearranging the columns in the order I would like 
-Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
-  select(Well,Sample.NTC.Control,Location,everything())
-
-view(Plate_1_dPCR_data)
-
 library(stringr)
-
-Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
-  mutate(
-    Treatment = word(Sample.NTC.Control, -1)
-  )
-
-view(Plate_1_dPCR_data)
-
-Plate_1_dPCR_data <- Plate_1_dPCR_data %>% 
-  select(Well,Sample.NTC.Control,Location,Treatment, everything())
-
-view(Plate_1_dPCR_data)
 
 #Now I am adding a Treatment Column to the Master_dPCR_dataframe
 
@@ -303,7 +255,7 @@ Master_dPCR_data_wide <- Master_dPCR_data_clean %>%
 
 view(Master_dPCR_data_wide)
 
-# Adding a proportion column 
+# Adding Columns that reflect the correction for dilutions
 Master_dPCR_data_wide <- Master_dPCR_data_wide %>%
   mutate(
     G22 = as.numeric(G22),
@@ -333,15 +285,25 @@ G22_summary <- Master_dPCR_data_wide  %>%
     se_G22 = sd_G22/sqrt(n())
   )
 
-Universal_summary <- Plate_1_dPCR_data_wide %>% 
-  filter(!Treatment %in% c("NTC", "3841_G22")) %>% 
-  group_by(Location, Treatment) %>% 
+Universal_summary <- Master_dPCR_data_wide %>% 
+  group_by(Location,Treatment) %>% 
   summarise(
     n = n(),
     mean_Universal = mean(Universal_Second_Correction, na.rm = TRUE),
     sd_Universal = sd(Universal_Second_Correction, na.rm = TRUE),
     se_Universal = sd_Universal/sqrt(n())
   )
+
+
+G24_summary <- Master_dPCR_data_wide %>% 
+  group_by(Location, Treatment) %>% 
+  summarise(
+    n = n(),
+    mean_G24 = mean(G24_Second_Correction, na.rm = TRUE),
+    sd_G24 = sd(G24_Second_Correction, na.rm = TRUE),
+    se_G24 = sd_G24/sqrt(n())
+  )
+
 
 # Plotting 'How abundance of G22 changes across Treatments'
 ## first changing the type of Treatment data to factor, to help with plotting treatment order
