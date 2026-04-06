@@ -246,6 +246,19 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
 
 view(Master_dPCR_data_clean)
 
+Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
+  mutate(
+    prefix = sub("_.*", "", Sample.NTC.Control),
+    Year = case_when(
+      nchar(prefix) == 4 ~ 2025,
+      nchar(prefix) == 3 ~ 2024,
+      TRUE ~ NA_real_
+    )
+  ) %>%
+  select(-prefix)   
+
+view(Master_dPCR_data_clean)
+
 # Pivoting my data frame so that one sample has only one row
 Master_dPCR_data_wide <- Master_dPCR_data_clean %>% 
   pivot_wider(
@@ -278,7 +291,7 @@ view(Master_dPCR_data_wide)
 # Summarizing G22, Universal, and G24.... taking into account the different MM's used 
 G22_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G22", !is.na(Location)) %>%
-  group_by(Location, Treatment) %>%
+  group_by(Location,Year,Treatment) %>%
   summarise(
     n = n(),
     mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
