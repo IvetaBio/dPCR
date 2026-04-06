@@ -293,13 +293,15 @@ G22_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G22", !is.na(Location)) %>%
   group_by(Location,Year,Treatment) %>%
   summarise(
-    n = n(),
+    n = sum(!is.na(G22_Second_Correction)),
     mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
     sd_G22 = sd(G22_Second_Correction, na.rm = TRUE),
     se_G22 = sd_G22 / sqrt(n()),
     .groups = "drop")
 
-Universal_summary <- Master_dPCR_data_wide %>% 
+
+Universal_summary <- Master_dPCR_data_wide %>%
+  filter(Reaction.Mix == "U_G22", !is.na(Location)) %>% 
   group_by(Location,Treatment) %>% 
   summarise(
     n = n(),
@@ -308,15 +310,15 @@ Universal_summary <- Master_dPCR_data_wide %>%
     se_Universal = sd_Universal/sqrt(n())
   )
 
-
-G24_summary <- Master_dPCR_data_wide %>% 
-  group_by(Location, Treatment) %>% 
+G24_summary <- Master_dPCR_data_wide %>%
+  filter(Reaction.Mix == "U_G24") %>%
+  group_by(Location, Year, Treatment) %>%
   summarise(
-    n = n(),
+    n = sum(!is.na(G24_Second_Correction)),
     mean_G24 = mean(G24_Second_Correction, na.rm = TRUE),
     sd_G24 = sd(G24_Second_Correction, na.rm = TRUE),
-    se_G24 = sd_G24/sqrt(n())
-  )
+    se_G24 = sd_G24 / sqrt(n),
+    .groups = "drop")
 
 
 # Plotting 'How abundance of G22 changes across Treatments'
