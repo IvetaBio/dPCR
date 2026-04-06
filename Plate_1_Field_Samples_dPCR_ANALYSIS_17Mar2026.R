@@ -307,7 +307,8 @@ G24_summary <- Master_dPCR_data_wide %>%
     mean_G24 = mean(G24_Second_Correction, na.rm = TRUE),
     sd_G24 = sd(G24_Second_Correction, na.rm = TRUE),
     se_G24 = sd_G24 / sqrt(n),
-    .groups = "drop")
+    .groups = "drop") %>% 
+  filter(n>0)
 
 Universal_U_G22_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G22", !is.na(Location)) %>% 
@@ -332,7 +333,14 @@ Universal_U_G24_summary <- Master_dPCR_data_wide %>%
   filter(n>0)
 
 
-
+# Now I am going to combine G24_summary and Universal_U_G24_summary together, so
+## that I can calculate the proportion of G24 relative to Universal
+G24_final_summary <- G24_summary %>% 
+  left_join(Universal_U_G24_summary,
+            by = c("Location","Year","Treatment")) %>% 
+  mutate(
+    G24_fraction = mean_G24/mean_Universal
+  )
 
 # Plotting 'How abundance of G22 changes across Treatments'
 ## first changing the type of Treatment data to factor, to help with plotting treatment order
