@@ -320,6 +320,17 @@ Universal_U_G22_summary <- Master_dPCR_data_wide %>%
     .groups = "drop") %>% 
   filter(n>0)
 
+Universal_U_G24_summary <- Master_dPCR_data_wide %>% 
+  filter(Reaction.Mix == "U_G24", !is.na(Location)) %>% 
+  group_by(Location, Year, Treatment) %>% 
+  summarise(
+    n = sum(!is.na(Universal_Second_Correction)),
+    mean_Universal = mean(Universal_Second_Correction, na.rm = TRUE),
+    sd_Universal = sd(Universal_Second_Correction, na.rm = TRUE),
+    se_Universal = sd(Universal_Second_Correction, na.rm = TRUE)/sqrt(n()),
+    .groups = "drop") %>% 
+  filter(n>0)
+
 
 
 
