@@ -339,8 +339,10 @@ G24_final_summary <- G24_summary %>%
   left_join(Universal_U_G24_summary,
             by = c("Location","Year","Treatment")) %>% 
   mutate(
-    G24_fraction = mean_G24/mean_Universal
-  )
+    G24_fraction = mean_G24/mean_Universal,
+    G24_percentage = G24_fraction * 100,
+    Universal_fraction = 1 - G24_fraction,
+    Universal_percentage = 100 - G24_percentage)
 
 # Plotting 'How abundance of G22 changes across Treatments'
 ## first changing the type of Treatment data to factor, to help with plotting treatment order
