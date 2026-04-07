@@ -189,9 +189,12 @@ Master_dPCR_data <- Master_dPCR_data %>%
       nchar(Prefix) == 4 & substr(Prefix, 3, 3) == "M" ~ "Minot",
       nchar(Prefix) == 3 & substr(Prefix, 2, 2) == "C" ~ "Carrington",
       nchar(Prefix) == 3 & substr(Prefix, 2, 2) == "M" ~ "Minot",
+      TRUE ~ NA_character_),
+    Resident_Rhizobial_Level = case_when(
+      substr(Prefix,nchar(Prefix), nchar(Prefix)) == "H" ~ "High",
+      substr(Prefix,nchar(Prefix), nchar(Prefix)) == "L" ~ "Low",
       TRUE ~ NA_character_
-    )
-  )
+    ))
 
 Master_dPCR_data_clean <- Master_dPCR_data %>% 
   select(Source_Plate,Sample.NTC.Control,Location,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
@@ -342,7 +345,30 @@ G24_final_summary <- G24_summary %>%
     G24_fraction = mean_G24/mean_Universal,
     G24_percentage = G24_fraction * 100,
     Universal_fraction = 1 - G24_fraction,
-    Universal_percentage = 100 - G24_percentage)
+    Universal_percentage = 100 - G24_percentage,
+    se_percent = (se_G24/mean_Universal) *100 )
+
+library(tidyr)
+
+G24_final_summary_longformat <- G24_final_summary %>% 
+  pivot_longer(
+    cols = c(G24_percentage,Universal_percentage),
+    names_to = "Group",
+    values_to = "Percentage"
+    )
+
+#Plotting G24 proportion 
+install.packages("paletteer")
+library(paletteer)
+
+G24_proportion_plot <- ggplot(G24_final_summary, aes(x = Treatment, y = G24_percentage, fill = G24_percentage))+
+  geom_bar(stat = "identity", position = "stack", width = 0.5)+
+  theme_classic()
+
+G24_proportion_plot
+
+
+
 
 # Plotting 'How abundance of G22 changes across Treatments'
 ## first changing the type of Treatment data to factor, to help with plotting treatment order
