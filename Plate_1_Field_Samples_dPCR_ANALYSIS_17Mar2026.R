@@ -197,7 +197,7 @@ Master_dPCR_data <- Master_dPCR_data %>%
     ))
 
 Master_dPCR_data_clean <- Master_dPCR_data %>% 
-  select(Source_Plate,Sample.NTC.Control,Location,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
+  select(Source_Plate,Sample.NTC.Control,Location,Resident_Rhizobial_Level,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
 
 view(Master_dPCR_data_clean)
 
