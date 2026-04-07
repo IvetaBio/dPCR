@@ -417,6 +417,49 @@ G24_proportion_barplot
 
 
 
+G22_proportion_barplot <- ggplot(G22_final_summary_longformat,
+                                 aes(
+                                   x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
+                                   y = Percentage,
+                                   fill = Group))+
+  geom_bar(stat = "identity")+
+  facet_grid(Location ~ Year)+
+  geom_text(aes(label = paste(round(Percentage,2),"%")), position = position_stack(vjust = 0.5))+
+  labs(x = NULL, y = "Percentage (%)",
+       title = "Relative Abundance of G22 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year")+
+  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(color = "black"))+
+  theme(axis.text.y = element_text(color = "black"))+
+  scale_fill_brewer(palette = "PRGn",
+                    labels = c(
+                      "G22_percentage" = "G22",
+                      "Universal_percentage" = "Resident Rhizobium"))
+
+
+G22_proportion_barplot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
