@@ -344,7 +344,7 @@ Universal_U_G24_summary <- Master_dPCR_data_wide %>%
 ## that I can calculate the proportion of G24 relative to Universal
 G24_final_summary <- G24_summary %>% 
   left_join(Universal_U_G24_summary,
-            by = c("Location","Year","Treatment")) %>% 
+            by = c("Location","Year","Treatment", "Resident_Rhizobial_Level")) %>% 
   mutate(
     G24_fraction = mean_G24/mean_Universal,
     G24_percentage = G24_fraction * 100,
@@ -360,6 +360,26 @@ G24_final_summary_longformat <- G24_final_summary %>%
     names_to = "Group",
     values_to = "Percentage"
     )
+
+
+#Now I am going to combine G22_summary and Universal_U_G22_summary together, so
+## that I can calculate the proportion of G22 relative to Universal
+G22_final_summary <- G22_summary %>% 
+  left_join(Universal_U_G22_summary,
+            by = c("Location","Year","Treatment","Resident_Rhizobial_Level")) %>% 
+  mutate(
+    G22_fraction = mean_G22/mean_Universal,
+    G22_percentage = G22_fraction *100,
+    Universal_fraction = 1 - G22_fraction,
+    Universal_percentage = 100 - G22_percentage,
+    se_percent = (se_G22/mean_Universal)* 100)
+
+G22_final_summary_longformat <- G22_final_summary %>% 
+  pivot_longer(
+    cols = c(G22_percentage,Universal_percentage),
+    names_to = "Group",
+    values_to = "Percentage"
+  )
 
 #Plotting G24 proportion 
 install.packages("paletteer")
