@@ -404,12 +404,11 @@ G24_proportion_barplot <- ggplot(G24_final_summary_longformat,
   facet_grid(Location ~ Year)+
   geom_text(aes(label = paste(round(Percentage,2),"%")), position = position_stack(vjust = 0.5))+
   labs(x = NULL, y = "Percentage (%)",
-       title = "Relative Abundance of G24 Within Total Rhizobial Populations \n
-       Across Treatments, Location, and Year")+
+       title = "Relative Abundance of G24 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year")+
   theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
   theme(axis.text.y = element_text(color = "black"))+
-  scale_fill_brewer(palette = "Set1",
+  scale_fill_brewer(palette = "Dark2",
                     labels = c(
                       "G24_percentage" = "G24",
                       "Universal_percentage" = "Resident Rhizobium"))
