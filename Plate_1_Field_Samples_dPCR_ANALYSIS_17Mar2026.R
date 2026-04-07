@@ -381,9 +381,65 @@ G22_final_summary_longformat <- G22_final_summary %>%
     values_to = "Percentage"
   )
 
-#Plotting G24 proportion 
-install.packages("paletteer")
-library(paletteer)
+
+################################################################################
+## Practicing Plotting the Proportion Data ####
+
+
+# Installing Packages and Libraries
+install.packages("ggiraph")
+library(ggiraph)
+library(patchwork)
+library(sf)
+library(RColorBrewer)
+
+
+# first plotting simple stacked barplot
+G24_proportion_barplot <- ggplot(G24_final_summary_longformat,
+                                 aes(
+                                   x = interaction(Treatment,Resident_Rhizobial_Level, sep = "\n"),
+                                   y = Percentage,
+                                   fill = Group))+
+  geom_bar(stat = "identity")+
+  facet_grid(Location ~ Year)+
+  geom_text(aes(label = paste(round(Percentage,2),"%")), position = position_stack(vjust = 0.5))+
+  labs(x = NULL, y = "Percentage (%)",
+       title = "Relative Abundance of G24 Within Total Rhizobial Populations \n
+       Across Treatments, Location, and Year")+
+  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(color = "black"))+
+  theme(axis.text.y = element_text(color = "black"))+
+  scale_fill_brewer(palette = "Set1",
+                    labels = c(
+                      "G24_percentage" = "G24",
+                      "Universal_percentage" = "Resident Rhizobium"))
+
+G24_proportion_barplot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
