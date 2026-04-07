@@ -305,36 +305,39 @@ G22_summary <- Master_dPCR_data_wide %>%
 
 G24_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G24", !is.na(Location)) %>%
-  group_by(Location, Year, Treatment) %>%
+  group_by(Location, Year, Treatment,Resident_Rhizobial_Level) %>%
   summarise(
     n = sum(!is.na(G24_Second_Correction)),
     mean_G24 = mean(G24_Second_Correction, na.rm = TRUE),
     sd_G24 = sd(G24_Second_Correction, na.rm = TRUE),
     se_G24 = sd_G24 / sqrt(n),
     .groups = "drop") %>% 
-  filter(n>0)
+  filter(n>0) %>% 
+  filter(!is.na(Resident_Rhizobial_Level))
 
 Universal_U_G22_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G22", !is.na(Location)) %>% 
-  group_by(Location,Year,Treatment) %>% 
+  group_by(Location,Year,Treatment,Resident_Rhizobial_Level) %>% 
   summarise(
     n = sum(!is.na(Universal_Second_Correction)),
     mean_Universal = mean(Universal_Second_Correction, na.rm = TRUE),
     sd_Universal = sd(Universal_Second_Correction, na.rm = TRUE),
     se_Universal = sd(Universal_Second_Correction, na.rm = TRUE)/sqrt(n()),
     .groups = "drop") %>% 
-  filter(n>0)
+  filter(n>0) %>% 
+  filter(!is.na(Resident_Rhizobial_Level))
 
 Universal_U_G24_summary <- Master_dPCR_data_wide %>% 
   filter(Reaction.Mix == "U_G24", !is.na(Location)) %>% 
-  group_by(Location, Year, Treatment) %>% 
+  group_by(Location, Year, Treatment,Resident_Rhizobial_Level) %>% 
   summarise(
     n = sum(!is.na(Universal_Second_Correction)),
     mean_Universal = mean(Universal_Second_Correction, na.rm = TRUE),
     sd_Universal = sd(Universal_Second_Correction, na.rm = TRUE),
     se_Universal = sd(Universal_Second_Correction, na.rm = TRUE)/sqrt(n()),
     .groups = "drop") %>% 
-  filter(n>0)
+  filter(n>0) %>% 
+  filter(!is.na(Resident_Rhizobial_Level))
 
 
 # Now I am going to combine G24_summary and Universal_U_G24_summary together, so
@@ -362,71 +365,6 @@ G24_final_summary_longformat <- G24_final_summary %>%
 install.packages("paletteer")
 library(paletteer)
 
-G24_proportion_plot <- ggplot(G24_final_summary, aes(x = Treatment, y = G24_percentage, fill = G24_percentage))+
-  geom_bar(stat = "identity", position = "stack", width = 0.5)+
-  theme_classic()
-
-G24_proportion_plot
-
-
-
-
-# Plotting 'How abundance of G22 changes across Treatments'
-## first changing the type of Treatment data to factor, to help with plotting treatment order
-G22_summary$Treatment <- factor(G22_summary$Treatment,
-                                levels = c("Uninoc","Ino","G22"))
-
-Universal_summary$Treatment <- factor(Universal_summary$Treatment, 
-                                      levels = c("Uninoc","Ino","G22"))
-
-
-# Plotting G22 Abundance 
-library(ggplot2)
-
-G22_abundance_plot <- ggplot(G22_summary, aes(x = Treatment, y = mean_G22, fill = Location))+
-  geom_col(position = position_dodge(width = 0.9))+
-  geom_errorbar(aes(ymin = mean_G22 - se_G22, ymax = mean_G22 + se_G22),
-                width = 0.2,
-                position = position_dodge(width = 0.9))+
-  labs(
-    title = "G22 Abundance by Treatment and Location", 
-    x = "Treatment",
-    y = "Location")+
-  theme_minimal()
-
-G22_abundance_plot
-
-
-Universal_abundance_plot <- ggplot(Universal_summary, aes(x = Treatment, y = mean_Universal, fill = Location))+
-  geom_col(position = position_dodge(width = 0.9))+
-  geom_errorbar(aes(ymin = mean_Universal - se_Universal, ymax = mean_Universal + se_Universal),
-                width = 0.2,
-                position = position_dodge(width = 0.9))+
-  labs(
-    title = "Universal Abundance by Treatment and Location",
-    x = "Treatment",
-    y = "Location")+
-  theme_minimal()
-
-Universal_abundance_plot
-
-
-## Grouping by Location and Treatment and summarizing the data 
-Plate_1_dPCR_summary <- Plate_1_dPCR_data_wide %>% 
-  group_by(Location, Treatment) %>% 
-  summarise(
-    n = n(),
-    mean_G22 = mean(G22_Proportion, na.rm = TRUE),
-    SD_G22 = sd(G22_Proportion, na.rm = TRUE),
-    SE_G22 = SD_G22/sqrt(n)
-  )
-
-
-# Getting ready to plot the data, first by removing the controls
-Plate_1_plot_data <- Plate_1_dPCR_summary %>% 
-  filter(!is.na(Location))
-
-library(ggplot2)
 
 
 
