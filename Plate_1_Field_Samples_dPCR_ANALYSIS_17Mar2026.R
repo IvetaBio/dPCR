@@ -233,7 +233,7 @@ Master_dPCR_data_clean <- Master_dPCR_data_clean %>%
 view(Master_dPCR_data_clean)
 
 Master_dPCR_data_clean <- Master_dPCR_data_clean %>% 
-  select(Source_Plate,Location,Sample.NTC.Control,Treatment,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
+  select(Source_Plate,Location,Sample.NTC.Control,Treatment,Resident_Rhizobial_Level,Reaction.Mix,Target..Name.,Conc...cp.µL...dPCR.reaction.)
 
 view(Master_dPCR_data_clean)
 
@@ -294,13 +294,14 @@ view(Master_dPCR_data_wide)
 # Summarizing G22, Universal, and G24.... taking into account the different MM's used 
 G22_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G22", !is.na(Location)) %>%
-  group_by(Location,Year,Treatment) %>%
+  group_by(Location,Year,Treatment,Resident_Rhizobial_Level) %>%
   summarise(
     n = sum(!is.na(G22_Second_Correction)),
     mean_G22 = mean(G22_Second_Correction, na.rm = TRUE),
     sd_G22 = sd(G22_Second_Correction, na.rm = TRUE),
     se_G22 = sd_G22 / sqrt(n()),
-    .groups = "drop")
+    .groups = "drop") %>%
+  filter(!is.na(Resident_Rhizobial_Level))
 
 G24_summary <- Master_dPCR_data_wide %>%
   filter(Reaction.Mix == "U_G24", !is.na(Location)) %>%
