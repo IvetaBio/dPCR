@@ -20,6 +20,11 @@ Plate_5_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Gra
 
 Plate_6_csv_path <- "R:/AES_MicrobiologicalArchive/Data/Geddes Lab/02_Geddes_Grad_Students/Iveta_Casey/Electronic Lab Notebook/Digital PCR/HWMC_Field_Samples_dPCR_Results/Plate_6_Field_Samples_dPCR_run_29Mar2026_analysis_03_04_2026_14_57_22_UTC+00_00.csv"
 
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(readr)
+
 #Reading in the data file 
 # Okay so the issue is with the first line.. so I am going to skip line 1
 Plate_1_dPCR_data <- read.csv(
@@ -392,7 +397,7 @@ library(ggiraph)
 library(patchwork)
 library(sf)
 library(RColorBrewer)
-
+library(ggplot2)
 
 # first plotting simple stacked barplot
 G24_proportion_barplot <- ggplot(G24_final_summary_longformat,
@@ -403,7 +408,7 @@ G24_proportion_barplot <- ggplot(G24_final_summary_longformat,
   geom_bar(stat = "identity")+
   facet_grid(Location ~ Year)+
   geom_text(aes(label = paste(round(Percentage,2),"%")), position = position_stack(vjust = 0.5))+
-  labs(x = NULL, y = "Percentage (%)",
+  labs(x = "Field Treatment", y = "Percentage (%)",
        title = "Relative Abundance of G24 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year")+
   theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
@@ -425,12 +430,12 @@ G22_proportion_barplot <- ggplot(G22_final_summary_longformat,
   geom_bar(stat = "identity")+
   facet_grid(Location ~ Year)+
   geom_text(aes(label = paste(round(Percentage,2),"%")), position = position_stack(vjust = 0.5))+
-  labs(x = NULL, y = "Percentage (%)",
+  labs(x = "Field Treatment", y = "Percentage (%)",
        title = "Relative Abundance of G22 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year")+
   theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
   theme(axis.text.y = element_text(color = "black"))+
-  scale_fill_brewer(palette = "PRGn",
+  scale_fill_brewer(palette = "Dark2",
                     labels = c(
                       "G22_percentage" = "G22",
                       "Universal_percentage" = "Resident Rhizobium"))
