@@ -451,17 +451,6 @@ G22_proportion_barplot
 hist(Master_dPCR_data_wide$G22_Second_Correction)
 
 #Log transforming abundance data
-Master_dPCR_data_wide <- Master_dPCR_data_wide %>% 
-  mutate(
-    log_G22 = log10(G22_Second_Correction + 1), #Note: adding 1 prevents any issues with log(0)
-    log_G24 = log10(G24_Second_Correction +1)
-  )
-
-
-
-
-
-
 
 
 
