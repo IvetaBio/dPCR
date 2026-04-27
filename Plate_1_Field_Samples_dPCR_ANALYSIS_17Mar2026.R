@@ -443,7 +443,7 @@ G22_proportion_barplot <- ggplot(G22_final_summary_longformat,
 
 G22_proportion_barplot
 
-####Running Statistical Analysis 26Apr2026
+####Running Statistical Analysis 27Apr2026
 
 # Figuring out if my data follows assumption of normality or not
 
@@ -451,9 +451,14 @@ G22_proportion_barplot
 hist(Master_dPCR_data_wide$G22_Second_Correction)
 
 #Log transforming abundance data
+## first by filtering by MM
+U_G22_MM <- Master_dPCR_data_wide %>% 
+  filter(Reaction.Mix == "U_G22")
 
+G22_hist_data <- U_G22_MM %>% 
+  mutate(log_G22 = log10(G22_Second_Correction + 1))
 
-
+hist(G22_hist_data$log_G22)
 
 
 
