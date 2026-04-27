@@ -386,6 +386,45 @@ G22_final_summary_longformat <- G22_final_summary %>%
     values_to = "Percentage"
   )
 
+### Calculating Proportion Data Again _27Apr2026#########
+
+G22_prop_data_27Apr2026 <- Master_dPCR_data_wide %>% 
+  filter(Reaction.Mix =="U_G22", !is.na(Location)) %>% 
+  mutate(
+    G22_prop = ifelse(
+      Universal_Second_Correction > 0,
+      G22_Second_Correction/Universal_Second_Correction,
+      NA),
+    Resident_prop = 1 - G22_prop)
+
+G22_prop_summary_data_27Apr2026 <- G22_prop_data_27Apr2026 %>% 
+  group_by(Location,Year,Treatment,Resident_Rhizobial_Level) %>% 
+  summarise(
+    mean_G22_prop = mean(G22_prop, na.rm = TRUE),
+    mean_U_prop = mean(Resident_prop, na.rm = TRUE),
+    sd_G22_prop = sd(G22_prop, na.rm = TRUE),
+    sd_U_prop = sd(Resident_prop, na.rm = TRUE),
+    n = n(),
+    se_G22_prop = sd_G22_prop/sqrt(n()),
+    se_U_prop = sd_U_prop/sqrt(n())
+  )
+
+G24_prop_data_27Apr2026 <- Master_dPCR_data_wide %>% 
+  filter(Reaction.Mix =="U_G24", !is.na(Location)) %>% 
+  mutate(
+    G24_prop = G24_Second_Correction/Universal_Second_Correction
+  )
+
+G24_prop_summary_data_27Apr2026 <- G24_prop_data_27Apr2026 %>% 
+  group_by(Location,Year, Treatment, Resident_Rhizobial_Level) %>% 
+  summarise(
+    mean_prop = mean(G24_prop, na.rm = TRUE),
+    sd_prop = sd(G24_prop, na.rm = TRUE),
+    n = n(),
+    se_prop = sd_prop / sqrt(n())
+  )
+
+
 
 ################################################################################
 ## Practicing Plotting the Proportion Data ####
@@ -466,6 +505,9 @@ hist(G22_hist_data$log_G22)
 
 
 
+####### reploting the proportions again 27Apr2026 #############
+
+library(ggplot2)
 
 
 
