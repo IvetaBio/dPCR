@@ -197,6 +197,7 @@ Master_dPCR_data <- Master_dPCR_data %>%
       TRUE ~ NA_character_),
     Resident_Rhizobial_Level = case_when(
       substr(Prefix,nchar(Prefix), nchar(Prefix)) == "H" ~ "High",
+      substr(Prefix,nchar(Prefix), nchar(Prefix)) == "h" ~ "High",
       substr(Prefix,nchar(Prefix), nchar(Prefix)) == "L" ~ "Low",
       TRUE ~ NA_character_
     ))
@@ -404,24 +405,32 @@ G22_prop_summary_data_27Apr2026 <- G22_prop_data_27Apr2026 %>%
     mean_U_prop = mean(Resident_prop, na.rm = TRUE),
     sd_G22_prop = sd(G22_prop, na.rm = TRUE),
     sd_U_prop = sd(Resident_prop, na.rm = TRUE),
-    n = n(),
-    se_G22_prop = sd_G22_prop/sqrt(n()),
-    se_U_prop = sd_U_prop/sqrt(n())
+    n = sum(!is.na(G22_prop)),
+    se_G22_prop = sd_G22_prop/sqrt(n),
+    se_U_prop = sd_U_prop/sqrt(n),
+    .groups = "drop"
   )
 
 G24_prop_data_27Apr2026 <- Master_dPCR_data_wide %>% 
   filter(Reaction.Mix =="U_G24", !is.na(Location)) %>% 
   mutate(
-    G24_prop = G24_Second_Correction/Universal_Second_Correction
-  )
+    G24_prop = ifelse(
+      Universal_Second_Correction > 0,
+      G24_Second_Correction/Universal_Second_Correction,
+      NA),
+    Resident_prop = 1 - G24_prop)
 
 G24_prop_summary_data_27Apr2026 <- G24_prop_data_27Apr2026 %>% 
   group_by(Location,Year, Treatment, Resident_Rhizobial_Level) %>% 
   summarise(
-    mean_prop = mean(G24_prop, na.rm = TRUE),
-    sd_prop = sd(G24_prop, na.rm = TRUE),
-    n = n(),
-    se_prop = sd_prop / sqrt(n())
+    mean_G24_prop = mean(G24_prop, na.rm = TRUE),
+    mean_U_prop = mean(Resident_prop, na.rm = TRUE),
+    sd_G24_prop = sd(G24_prop, na.rm = TRUE),
+    sd_U_prop = sd(Resident_prop, na.rm = TRUE),
+    n = sum(!is.na(G24_prop)),
+    se_G24_prop = sd_G24_prop / sqrt(n),
+    se_U_prop = sd_U_prop/ sqrt(n),
+    .groups = "drop"
   )
 
 
@@ -482,9 +491,121 @@ G22_proportion_barplot <- ggplot(G22_final_summary_longformat,
 
 G22_proportion_barplot
 
-####Running Statistical Analysis 27Apr2026
+
+
+####### reploting the proportions again 27Apr2026 #############
+
+library(ggplot2)
+
+G22_plot_data_longformat <- G22_prop_summary_data_27Apr2026 %>% 
+  pivot_longer(
+    cols = c(mean_G22_prop,mean_U_prop),
+    names_to = "Group",
+    values_to = "Proportion"
+  )
+
+G22_plot_data_longformat <- G22_plot_data_longformat %>% 
+  filter(!is.na(Resident_Rhizobial_Level))
+
+G22_prop_barplot_27Apr2026 <- ggplot(
+  G22_plot_data_longformat,
+  aes(
+    x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
+    y = Proportion * 100,
+    fill = Group
+  )
+) +
+  geom_bar(stat = "identity") +
+  facet_grid(Location ~ Year) +
+  geom_text(
+    aes(label = paste0(round(Proportion * 100, 2), "%")),
+    position = position_stack(vjust = 0.5)
+  ) +
+  labs(
+    x = "Field Treatment",
+    y = "Relative abundance (%)",
+    title = "Relative Abundance of G22 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5, color = "black"),
+    axis.text.y = element_text(color = "black")
+  ) +
+  scale_fill_brewer(
+    palette = "Dark2",
+    labels = c(
+      "mean_G22_prop" = "G22",
+      "mean_U_prop" = "Resident Rhizobium"
+    )
+  )
+
+G22_prop_barplot_27Apr2026
+
+G24_plot_data_longformat <- G24_prop_summary_data_27Apr2026 %>% 
+  pivot_longer(
+    cols = c(mean_G24_prop,mean_U_prop),
+    names_to = "Group",
+    values_to = "Proportion"
+  )
+
+
+G24_plot_data_longformat <- G24_plot_data_longformat %>% 
+  filter(!is.na(Resident_Rhizobial_Level))
+
+G24_prop_barplot_27Apr2026 <- ggplot(
+  G24_plot_data_longformat,
+  aes(
+    x = interaction(Treatment,Resident_Rhizobial_Level, sep = "\n"),
+    y = Proportion *100,
+    fill = Group))+
+  geom_bar(stat = "identity")+
+  facet_grid(Location ~Year)+
+  geom_text(
+    aes(label = paste0(round(Proportion * 100,2), "%")),
+    position = position_stack(vjust = 0.5))+
+  labs(
+    x = "Field Treatment",
+    y = "Relative abundance (%)",
+    title = "Relative Abundance of G24 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5, color = "black"),
+    axis.text.y = element_text(color = "black")
+  ) +
+  scale_fill_brewer(
+    palette = "Dark2",
+    labels = c(
+      "mean_G24_prop" = "G24",
+      "mean_U_prop" = "Resident Rhizobium"
+    )
+  )
+
+G24_prop_barplot_27Apr2026
+
+####Running Statistical Analysis 27Apr2026####################################
 
 # Figuring out if my data follows assumption of normality or not
+
+# Step 1: checking the structure of my data 
+str(G22_prop_data_27Apr2026)
+str(G24_prop_data_27Apr2026)
+
+# Step 2: change the values that should be factors as factors instead of continuous 
+G22_prop_data_27Apr2026 <- G22_prop_data_27Apr2026 %>%
+  mutate(
+    Location = as.factor(Location),
+    Year = as.factor(Year),
+    Treatment = as.factor(Treatment),
+    Resident_Rhizobial_Level = as.factor(Resident_Rhizobial_Level)
+  )
+
+
+G24_prop_data_27Apr2026 <- G24_prop_data_27Apr2026 %>% 
+  mutate(
+    Location = as.factor(Location),
+    Year = as.factor(Year),
+    Treatment = as.factor(Treatment),
+    Resident_Rhizobial_Level = as.factor(Resident_Rhizobial_Level)
+  )
 
 #running the following will not entirely help
 hist(Master_dPCR_data_wide$G22_Second_Correction)
@@ -499,15 +620,37 @@ G22_hist_data <- U_G22_MM %>%
 
 hist(G22_hist_data$log_G22)
 
+qqnorm(G22_hist_data$log_G22)
+qqline(G22_hist_data$log_G22)
 
 
 
+table(G22_prop_data_27Apr2026$Resident_Rhizobial_Level, useNA = "ifany")
 
+table(G22_prop_data_27Apr2026$Treatment)
 
+table(G24_prop_data_27Apr2026$Resident_Rhizobial_Level)
 
-####### reploting the proportions again 27Apr2026 #############
+table(G24_prop_data_27Apr2026$Treatment)
 
-library(ggplot2)
+# Running kruskal test 27Apr2026
+kruskal.test(G22_prop ~ Treatment, data = subset(G22_prop_data_27Apr2026,
+                                                 Location == "Minot" &
+                                                   Year == 2025 &
+                                                   Resident_Rhizobial_Level == "Low"))
+
+## running Wilcoxon pairwise tests to see which treatments differ
+pairwise.wilcox.test(
+  x = subset(G22_prop_data_27Apr2026,
+             Location == "Minot" &
+               Year == 2025 &
+               Resident_Rhizobial_Level == "Low")$G22_prop,
+  g = subset(G22_prop_data_27Apr2026,
+             Location == "Minot" &
+               Year == 2025 &
+               Resident_Rhizobial_Level == "Low")$Treatment,
+  p.adjust.method = "BH"
+)
 
 
 
