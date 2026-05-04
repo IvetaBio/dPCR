@@ -403,6 +403,8 @@ G22_prop_summary_data_27Apr2026 <- G22_prop_data_27Apr2026 %>%
   summarise(
     mean_G22_prop = mean(G22_prop, na.rm = TRUE),
     mean_U_prop = mean(Resident_prop, na.rm = TRUE),
+    median_G22_prop = median(G22_prop, na.rm = TRUE),
+    median_U_prop = median(Resident_prop, na.rm = TRUE),
     sd_G22_prop = sd(G22_prop, na.rm = TRUE),
     sd_U_prop = sd(Resident_prop, na.rm = TRUE),
     n = sum(!is.na(G22_prop)),
@@ -736,19 +738,26 @@ G22_jitterplot <- ggplot(Master_dPCR_data_longformat %>%
                          aes(
                            x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
                            y = log10(value +1),
-                           color = Signal))+
-  geom_jitter(width = 0.2, alpha = 0.7)+
+                           fill = Signal))+
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2,dodge.width = 0.5),alpha = 0.5,
+              pch=21, stroke=0, size = 4.0)+
+  stat_summary(fun = median,geom = "crossbar", position = position_dodge(width = 0.5), width = 0.3, show.legend = FALSE)+
   facet_grid(Location ~ Year)+
   labs(x = "Field Treatment", y = " G22 Copies/uL in original extraction, Log Transformed",
        title = "Distribution of G22 Across Treatments, Location, and Year")+
-  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(
+    strip.text.x = element_text(size = 16, face = "bold"),
+    strip.text.y = element_text(size = 16, face = "bold")
+  )+
+  theme(plot.title = element_text(size = 18))+
+  theme(axis.text.x = element_text(size = 16,angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
-  theme(axis.text.y = element_text(color = "black"))+
-  scale_color_brewer(
+  theme(axis.text.y = element_text(size = 16, color = "black"))+
+  scale_fill_brewer(
     palette = "Dark2",
     labels = c(
-      "mean_G22_prop" = "G22",
-      "mean_U_prop" = "Resident Rhizobium"
+      "G22_Second_Correction" = "G22",
+      "Universal_Second_Correction" = "Resident Rhizobium"
     )
   )
 
@@ -762,37 +771,57 @@ G24_jitterplot <- ggplot(Master_dPCR_data_longformat %>%
                          aes(
                            x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
                            y = log10(value +1),
-                           color = Signal))+
-  geom_jitter(width = 0.2, alpha = 0.7)+
+                           fill = Signal))+
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2,dodge.width = 0.5,),alpha = 0.5,
+              pch=21, stroke=0, size = 4.0)+
+  stat_summary(fun = median,geom = "crossbar", position = position_dodge(width = 0.5), width = 0.3, show.legend = FALSE)+
   facet_grid(Location ~ Year)+
   labs(x = "Field Treatment", y = " G24 Copies/uL in original extraction, Log Transformed",
        title = "Distribution of G24 Across Treatments, Location, and Year")+
-  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(
+    strip.text.x = element_text(size = 16, face = "bold"),
+    strip.text.y = element_text(size = 16, face = "bold")
+  )+
+  theme(plot.title = element_text(size = 18))+
+  theme(axis.text.x = element_text(size = 16, angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
-  theme(axis.text.y = element_text(color = "black"))+
-  scale_color_brewer(
+  theme(axis.text.y = element_text(size = 16,color = "black"))+
+  scale_fill_brewer(
     palette = "Dark2",
     labels = c(
-      "mean_G24_prop" = "G24",
-      "mean_U_prop" = "Resident Rhizobium"
+      "G24_Second_Correction" = "G24",
+      "Universal_Second_Correction" = "Resident Rhizobium"
     )
-  ) 
+  )
 
 G24_jitterplot
 
 G22_jitterplot+G24_jitterplot
 
 
+
+(G22_prop_barplot_27Apr2026 + G24_prop_barplot_27Apr2026) /
+  (G22_jitterplot + G24_jitterplot)
+
+
 install.packages("plotly")
 library(plotly)
-
-ggplotly(G22_jitterplot)
-
-
+library(ggtext)
+library(RColorBrewer)
 
 
+########### 04Mar2026 Getting a summary how many samples each treatment has
+G22_Table <- G22_prop_data_27Apr2026 %>% 
+  count(Treatment,Location,Year,Resident_Rhizobial_Level)
 
 
+G22_High_Carrington_2024 <- Master_dPCR_data_longformat %>% 
+  filter(
+    Location == "Carrington",
+    Year == "2024",
+    Treatment == "G22",
+    Resident_Rhizobial_Level == "High"
+  )
 
 
 
