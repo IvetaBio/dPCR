@@ -653,36 +653,61 @@ pairwise.wilcox.test(
 )
 
 
+#############Plotting box plots for my raw data 28Apr2026 ######################
+
+# first transforming my Master_dPCR_data_wide data into long format
+
+G22_boxplot_1 <- ggplot(Master_dPCR_data_wide, aes(x = Treatment, y = G22_Second_Correction, fill = Treatment))+
+  geom_boxplot()
+
+G24_boxplot_1 <- ggplot(Master_dPCR_data_wide, aes(x = Treatment, y = G24_Second_Correction, fill = Treatment))+
+  geom_boxplot()
+
+G24_boxplot_1
+
+library(patchwork)
+
+G22_boxplot_1 + G24_boxplot_1
+
+
+G22_boxplot_2 <- Master_dPCR_data_wide %>%
+  filter(!is.na(Resident_Rhizobial_Level)) %>%
+  ggplot(aes(x = interaction(Treatment,Resident_Rhizobial_Level, sep = "\n"), 
+             y = G22_Second_Correction, 
+             fill = Treatment)) +
+  geom_boxplot() +
+  facet_grid(Location ~ Year)
+
+G22_boxplot_2
+
+G24_boxplot_2 <- Master_dPCR_data_wide %>% 
+  filter(!is.na(Resident_Rhizobial_Level)) %>% 
+  ggplot(aes(x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
+             y = G24_Second_Correction,
+             fill = Treatment))+
+  geom_boxplot()+
+  facet_grid(Location ~ Year)
+
+G24_boxplot_2
+
+summary(Master_dPCR_data_wide$G22_Second_Correction)
+summary(Master_dPCR_data_wide$G24_Second_Correction)
+
+
+### plotting histogram
+ggplot(Master_dPCR_data_wide, aes(x = log10(G22_Second_Correction + 1))) +
+  geom_histogram(bins = 25)
+
+
+ggplot(Master_dPCR_data_wide, aes(x = log10(G24_Second_Correction +1))) +
+  geom_histogram(bins = 25)
 
 
 
+write.csv(Master_dPCR_data_wide, "Master_dPCR_data_wide.csv", row.names = FALSE)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+###### 04May2026 Trying to use a detection frequency plot
 
 
 
