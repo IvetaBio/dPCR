@@ -707,7 +707,92 @@ ggplot(Master_dPCR_data_wide, aes(x = log10(G24_Second_Correction +1))) +
 write.csv(Master_dPCR_data_wide, "Master_dPCR_data_wide.csv", row.names = FALSE)
 
 
-###### 04May2026 Trying to use a detection frequency plot
+###### 04May2026 Trying to use a detection jitter plot
+
+Master_dPCR_data_wide <- Master_dPCR_data_wide %>% 
+  filter(!is.na(Location))
+
+Master_dPCR_data_longformat <- Master_dPCR_data_wide %>% 
+  pivot_longer(
+    cols = c(G22_Second_Correction,Universal_Second_Correction,G24_Second_Correction),
+    names_to = "Signal",
+    values_to = "value"
+  )
+
+ggplot(Master_dPCR_data_wide,
+       aes(x = interaction(Treatment,Resident_Rhizobial_Level),
+           y = G22_Second_Correction,
+           color = G22_Second_Correction > 0))+
+  geom_jitter(width = 0.2, alpha = 0.7)+
+  facet_grid(Location ~ Year)+
+  scale_y_continuous(trans = "log1p")
+
+
+
+
+G22_jitterplot <- ggplot(Master_dPCR_data_longformat %>% 
+                           filter(Signal %in% c("G22_Second_Correction", "Universal_Second_Correction"),
+                                  !is.na(value)),
+                         aes(
+                           x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
+                           y = log10(value +1),
+                           color = Signal))+
+  geom_jitter(width = 0.2, alpha = 0.7)+
+  facet_grid(Location ~ Year)+
+  labs(x = "Field Treatment", y = " G22 Copies/uL in original extraction, Log Transformed",
+       title = "Distribution of G22 Across Treatments, Location, and Year")+
+  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(color = "black"))+
+  theme(axis.text.y = element_text(color = "black"))+
+  scale_color_brewer(
+    palette = "Dark2",
+    labels = c(
+      "mean_G22_prop" = "G22",
+      "mean_U_prop" = "Resident Rhizobium"
+    )
+  )
+
+
+G22_jitterplot
+
+
+G24_jitterplot <- ggplot(Master_dPCR_data_longformat %>% 
+                           filter(Signal %in% c("G24_Second_Correction","Universal_Second_Correction"),
+                                  !is.na(value)),
+                         aes(
+                           x = interaction(Treatment, Resident_Rhizobial_Level, sep = "\n"),
+                           y = log10(value +1),
+                           color = Signal))+
+  geom_jitter(width = 0.2, alpha = 0.7)+
+  facet_grid(Location ~ Year)+
+  labs(x = "Field Treatment", y = " G24 Copies/uL in original extraction, Log Transformed",
+       title = "Distribution of G24 Across Treatments, Location, and Year")+
+  theme(axis.text.x = element_text(angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(color = "black"))+
+  theme(axis.text.y = element_text(color = "black"))+
+  scale_color_brewer(
+    palette = "Dark2",
+    labels = c(
+      "mean_G24_prop" = "G24",
+      "mean_U_prop" = "Resident Rhizobium"
+    )
+  ) 
+
+G24_jitterplot
+
+G22_jitterplot+G24_jitterplot
+
+
+install.packages("plotly")
+library(plotly)
+
+ggplotly(G22_jitterplot)
+
+
+
+
+
+
 
 
 
