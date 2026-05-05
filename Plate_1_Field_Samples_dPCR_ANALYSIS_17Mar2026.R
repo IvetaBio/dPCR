@@ -529,8 +529,14 @@ G22_prop_barplot_27Apr2026 <- ggplot(
     title = "Relative Abundance of G22 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year"
   ) +
   theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5, color = "black"),
-    axis.text.y = element_text(color = "black")
+    axis.text.x = element_text(size = 14, angle = 0, hjust = 0.5, color = "black"),
+    axis.text.y = element_text(size = 14, color = "black"),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 16),
+    strip.text.x = element_text(size = 16, face = "bold"),
+    strip.text.y = element_text(size = 16, face = "bold")
   ) +
   scale_fill_brewer(
     palette = "Dark2",
@@ -570,8 +576,16 @@ G24_prop_barplot_27Apr2026 <- ggplot(
     title = "Relative Abundance of G24 Within Total Rhizobial Populations\nAcross Treatments, Location, and Year"
   ) +
   theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5, color = "black"),
-    axis.text.y = element_text(color = "black")
+    strip.text.x = element_text(size = 16, face = "bold"),
+    strip.text.y = element_text(size = 16, face = "bold")
+  )+
+  theme(
+    axis.text.x = element_text(size = 14,angle = 0, hjust = 0.5, color = "black"),
+    axis.text.y = element_text(size = 14, color = "black"),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 16)
   ) +
   scale_fill_brewer(
     palette = "Dark2",
@@ -582,6 +596,8 @@ G24_prop_barplot_27Apr2026 <- ggplot(
   )
 
 G24_prop_barplot_27Apr2026
+
+G22_prop_barplot_27Apr2026 + G24_prop_barplot_27Apr2026
 
 ####Running Statistical Analysis 27Apr2026####################################
 
@@ -750,9 +766,15 @@ G22_jitterplot <- ggplot(Master_dPCR_data_longformat %>%
     strip.text.y = element_text(size = 16, face = "bold")
   )+
   theme(plot.title = element_text(size = 18))+
-  theme(axis.text.x = element_text(size = 16,angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(size = 14,angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
-  theme(axis.text.y = element_text(size = 16, color = "black"))+
+  theme(axis.title.x = element_text(size = 14))+
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text.y = element_text(size = 14, color = "black"))+
+  theme(
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 16)
+  )+
   scale_fill_brewer(
     palette = "Dark2",
     labels = c(
@@ -783,9 +805,15 @@ G24_jitterplot <- ggplot(Master_dPCR_data_longformat %>%
     strip.text.y = element_text(size = 16, face = "bold")
   )+
   theme(plot.title = element_text(size = 18))+
-  theme(axis.text.x = element_text(size = 16, angle = 0,hjust = 0.5))+
+  theme(axis.text.x = element_text(size = 14, angle = 0,hjust = 0.5))+
   theme(axis.text.x = element_text(color = "black"))+
-  theme(axis.text.y = element_text(size = 16,color = "black"))+
+  theme(axis.text.y = element_text(size = 14,color = "black"))+
+  theme(axis.title.x = element_text(size = 14))+
+  theme(axis.title.y = element_text(size = 14))+
+  theme(
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 16)
+  )+
   scale_fill_brewer(
     palette = "Dark2",
     labels = c(
@@ -812,6 +840,9 @@ library(RColorBrewer)
 
 ########### 04Mar2026 Getting a summary how many samples each treatment has
 G22_Table <- G22_prop_data_27Apr2026 %>% 
+  count(Treatment,Location,Year,Resident_Rhizobial_Level)
+
+G24_Table <- G24_prop_data_27Apr2026 %>% 
   count(Treatment,Location,Year,Resident_Rhizobial_Level)
 
 
